@@ -1,0 +1,2 @@
+# SoFlic
+Social Movie App
