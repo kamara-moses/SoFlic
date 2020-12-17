@@ -1,17 +1,28 @@
-
 const express = require("express");
+const mongoose = require("mongoose");
+require("dotenv").config();
 const path = require("path");
 const PORT = process.env.PORT || 3001;
 const app = express();
 
-app.use([
-    express.urlencoded({ extended: true }),
-    express.json()
-]);
+app.use([express.urlencoded({ extended: true }), express.json()]);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
 }
+
+mongoose.connect(
+  process.env.MONGODB_CONNECTION_STRING,
+  {
+    useNewUrlParser: true,
+    useUnitfiedTopology: true,
+    useCreateIndex: true,
+  },
+  (err) => {
+    if (err) throw err;
+    console.log("MongoDB connection established");
+  }
+);
 
 // Link API Routes here
 
@@ -20,5 +31,9 @@ app.get("*", (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log("🚀  Server server now on port", PORT, "👻 React App on Port 3000");
+  console.log(
+    "🚀  Server server now on port",
+    PORT,
+    "👻 React App on Port 3000"
+  );
 });
