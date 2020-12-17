@@ -1,15 +1,13 @@
 const express = require("express");
 const mongoose = require("mongoose");
 require("dotenv").config();
+const cors = require("cors");
 const path = require("path");
 const PORT = process.env.PORT || 3001;
 const app = express();
 
 app.use([express.urlencoded({ extended: true }), express.json()]);
-
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static("client/build"));
-}
+app.use(cors());
 
 mongoose.connect(
   process.env.MONGODB_CONNECTION_STRING,
@@ -25,10 +23,6 @@ mongoose.connect(
 );
 
 // Link API Routes here
-
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "./client/build/index.html"));
-});
 
 app.listen(PORT, () => {
   console.log(
